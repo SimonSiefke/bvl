@@ -1,0 +1,147 @@
+:root{
+    --theme-color:#2877B8
+}
+body{
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: #fafafa;
+    overflow-y: scroll;
+    overflow-x: hidden
+}
+
+header{
+    width: 40%;
+    margin: 0 auto;
+    margin-top: 4%;
+}
+
+.anlagen-fotos .image-wrapper{
+    width: 32%;
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+}
+.anlagen-fotos .image-wrapper img{
+   width: 100%;
+}
+
+.anlagen-fotos{
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    margin-top: 3%;
+}
+
+.hidden{
+    visibility: hidden
+}
+
+@media only screen and (max-width: 796px) {
+        .anlagen-fotos .image-wrapper {
+            width: 48%;
+        }
+        .anlagen-fotos{
+            top: 20%;
+        }
+}
+
+@media only screen and (max-width: 450px) {
+        .anlagen-fotos .image-wrapper {
+        width: 98%;
+        }
+    header{
+        width: 80%;
+    }
+    .anlagen-fotos{
+        top: 10%;
+    }
+}
+
+#current-video-wrapper{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background:black;
+    display: flex;
+    top: 0;
+    justify-content: center;
+    transition: all 0.3s;
+    align-items: center;
+    overflow: hidden;
+    opacity: 0;
+}
+#current-video-wrapper.visible{
+    opacity: 1;
+}
+
+#current-video-wrapper video{
+  width: 100%;
+  max-width: calc(100vh * (16 / 9)); /* always keep aspect ratio of 16/9*/
+}
+
+#info{
+    display: flex;
+    flex-direction: column
+}
+
+#save-videos{
+    padding: 2rem;
+}
+
+img{
+    user-select: none
+}
+
+button{
+    box-shadow: none;
+    border:none;
+    padding:0;
+}
+
+#close{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    z-index: 3;
+    background: transparent;
+}
+
+#play{
+    /* background: url('./images/play.svg') green;
+    background-size: cover; */
+    width: 3.5rem;
+    height: 3.5rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    background: transparent
+
+}
+#play:hover{
+    cursor: pointer; /* TODO: not working */
+}
+
+#play svg{
+    fill:var(--theme-color);
+}
+
+
+.loader{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+/*
+  Set the color of the icon
+*/
+.loader svg path,
+.loader svg rect{
+  fill: var(--theme-color);
+}
