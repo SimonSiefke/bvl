@@ -80,7 +80,7 @@ var workbox = (function() {
 if (workbox) {
   workbox.skipWaiting()
   console.log(`Yay! Workbox is loaded 🎉`)
-  workbox.precaching.precacheAndRoute(['style.css', 'index.js', 'ramjet.js', './index.html','./', 'manifest.json'])
+  workbox.precaching.precacheAndRoute(['./style.css', './index.js', './ramjet.js', './index.html','./', './manifest.json'])
 
   workbox.routing.registerRoute(
     new RegExp('/images/'),
