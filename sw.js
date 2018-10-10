@@ -96,6 +96,20 @@ if (workbox) {
       ],
     })
   )
+  workbox.routing.registerRoute(
+    new RegExp('/favicon/'),
+    workbox.strategies.cacheFirst({
+      cacheName: 'favicon-cache',
+      plugins: [
+        new workbox.expiration.Plugin({
+          // Only cache requests for a week
+          maxAgeSeconds: 7 * 24 * 60 * 60,
+          // Only cache 10 requests.
+          maxEntries: 10,
+        }),
+      ],
+    })
+  )
 } else {
   console.log(`Boo! Workbox didn't load 😬`)
 }
