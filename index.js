@@ -107,6 +107,15 @@ async function hideVideo(imageWrapper, image) {
   document.body.style.overflow = 'auto'
 }
 
+function setSeekbarPosition() {
+  document.getElementById(
+    'custom-seekbar'
+  ).style.marginTop = `${currentVideo.offsetHeight / 2 - 5}px`
+}
+
+window.addEventListener('resize', setSeekbarPosition)
+window.addEventListener('orientationchange', setSeekbarPosition)
+
 imageWrappers.forEach(imageWrapper => {
   imageWrapper.addEventListener('click', async () => {
     console.log('show loader')
@@ -115,6 +124,7 @@ imageWrappers.forEach(imageWrapper => {
     }
     const image = imageWrapper.querySelector('img')
     currentVideo.setAttribute('poster', image.src)
+    // currentVideo.setAttribute('controls', '')
     currentVideo.removeAttribute('autoplay')
 
     // if (currentVideo.requestFullscreen) currentVideo.requestFullscreen()
@@ -137,18 +147,22 @@ imageWrappers.forEach(imageWrapper => {
 
     const animationPromise = animate(currentVideo, imageWrapper)
 
-      loader.hidden = false
+    loader.hidden = false
 
     // console.log('await promise')
     const videoSrc = await videoSrcPromise
     // console.log('promise resolved')
     if (videoSrc) {
       console.log('set src')
+      // console.log(currentVideo.offsetHeight)
+      document.querySelector('#custom-seekbar span').style.width = '0'
+
       currentVideo.setAttribute('src', videoSrc)
       currentVideo.setAttribute('autoplay', '')
       await animationPromise
       isAnimating = false
       currentVideoWrapper.style.pointerEvents = 'all'
+      setSeekbarPosition()
     } else {
       console.error('no video for', imageWrapper.src)
     }
@@ -349,3 +363,57 @@ async function getVideo(database, videoUrl) {
 }
 
 initDatabase()
+
+// Begin custom seekbar
+currentVideo.ontimeupdate = function() {
+  var percentage = (currentVideo.currentTime / currentVideo.duration) * 100
+  document.querySelector('#custom-seekbar span').style.width = `${percentage}%`
+}
+
+function onSeekbarClick(event) {
+  event.stopPropagation()
+  const x =
+    event.pageX || (event.touches && event.touches[0].clientX) || undefined
+  console.log(x)
+  var customSeekbar = document.getElementById('custom-seekbar')
+  if (!isNaN(x) && isFinite(x)) {
+    console.log(x / customSeekbar.clientWidth)
+    document.querySelector('#custom-seekbar span').style.width = `${(x /
+      customSeekbar.clientWidth) *
+      100}%`
+  }
+
+  var left = x - customSeekbar.offsetLeft
+  var totalWidth = parseInt(
+    document.getElementById('custom-seekbar').offsetWidth
+  )
+  var percentage = left / totalWidth
+  var currentVideoTime = currentVideo.duration * percentage
+  if (!isNaN(currentVideoTime) && isFinite(currentVideoTime)) {
+    currentVideo.currentTime = currentVideoTime
+  }
+}
+
+function throttled(delay, fn) {
+  let lastCall = 0
+  return function(...args) {
+    const now = new Date().getTime()
+    if (now - lastCall < delay) {
+      return
+    }
+    lastCall = now
+    return fn(...args)
+  }
+}
+document
+  .getElementById('custom-seekbar')
+  .addEventListener('click', onSeekbarClick)
+document
+  .getElementById('custom-seekbar')
+  .addEventListener('touchstart', onSeekbarClick)
+document
+  .getElementById('custom-seekbar')
+  .addEventListener('touchstart', onSeekbarClick)
+document
+  .getElementById('custom-seekbar')
+  .addEventListener('touchmove', onSeekbarClick)

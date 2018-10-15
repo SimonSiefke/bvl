@@ -145,3 +145,27 @@ button{
 .loader svg rect{
   fill: var(--theme-color);
 }
+
+
+#custom-seekbar
+{
+  --height: 10px;
+  cursor: pointer;
+  height: var(--height);
+  margin-bottom: 0;
+  border: 1px solid #11AAE9;
+  box-sizing: border-box;
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
+  z-index: 4;
+}
+#custom-seekbar span
+{
+  background-color: #11AAE9;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: var(--height);
+  width: 0px;
+}
